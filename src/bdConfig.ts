@@ -13,7 +13,7 @@ pool.on("connect", () => {
 export const createTables = async () => {
 
   const usersTable = ` 
-  CREATE TABLE IF NOT EXISTS users (
+  CREATE TABLE IF NOT EXISTS list1 (
     id SERIAL PRIMARY KEY,
     username VARCHAR(255)
   );
@@ -29,7 +29,7 @@ export const createTables = async () => {
     });
 
   const createUsers = ` 
-  INSERT INTO users (username) VALUES ('Вася'), ('Женя'), ('Катя');
+  INSERT INTO list1 (username) VALUES ('Вася'), ('Женя'), ('Катя');
   `
 
   await pool

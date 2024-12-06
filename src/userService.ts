@@ -4,7 +4,7 @@ import { User } from "./types"
 class UserService {
 
     async getUserById(id: number) {
-        const user: User = (await pool.query('SELECT * FROM users WHERE id = $1', [id])).rows[0]
+        const user: User = (await pool.query('SELECT * FROM list1 WHERE id = $1', [id])).rows[0]
         if (user) {
             console.log('user', user)
             return user
