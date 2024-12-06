@@ -1,15 +1,15 @@
 import express from 'express';
 import TelegramBot from 'node-telegram-bot-api'
-import dotenv from 'dotenv'
+import 'dotenv/config'
 import http from 'http';
 import { configure } from './appConfig';
-import { getWeather } from './weatherController';
-
-dotenv.config()
+import { createTables } from './bdConfig';
+import { userController } from './userController';
 
 const app = express()
 
 configure(app)
+createTables()
 
 const PORT = process.env.PORT || 3000
 
@@ -28,16 +28,13 @@ bot.on('message', async (msg) => {
     const text = msg.text
 
     if (text === '/start') {
-        await bot.sendMessage(chatId, 'Select your city')
+        await bot.sendMessage(chatId, 'Select user id')
     } else {
-        const weather = await getWeather(text)
-        if (weather instanceof Error) {
-            await bot.sendMessage(chatId, 'City not found')
+        const user = await userController.getUserById(Number(text))
+        if (user instanceof Error) {
+            await bot.sendMessage(chatId, 'User not found')
         } else {
-            weather.writeDescription()
-            await bot.sendMessage(chatId,
-                `Current weather in ${weather.city}:\n${weather.temp}°C. ${weather.descriptionTemp} ${weather.descriptionHumidity}\nHumidity: ${weather.humidity}%`
-            );
+            await bot.sendMessage(chatId, `User: ${user.username}`);
         }
     }
 
